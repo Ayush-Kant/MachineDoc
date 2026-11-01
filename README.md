@@ -131,8 +131,12 @@ Verify and follow applicable source terms before redistributing dataset files. T
 - [ ] Phase 8: competition submission.
 
 Phase 1 working documents:
+- [Phase 1 findings and decisions](docs/phase1-findings-and-decisions.md)
 - [FD001 structural audit](docs/audits/fd001-data-audit.md)
+- [FD001 sensor behaviour analysis](docs/audits/fd001-sensor-behaviour-analysis.md)
 - [FD001 RUL targets and worked examples](docs/rul-targets-and-examples.md)
 - [Dataset guide](docs/dataset-guide.md)
+- [Reproducible sensor analysis script](scripts/analyze_fd001_sensors.py)
+- [Phase 1 sensor analysis outputs](reports/phase1/)
 
 See the `docs/` directory for detailed project specifications as they are added.
