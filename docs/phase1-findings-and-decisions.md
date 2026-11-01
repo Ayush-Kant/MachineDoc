@@ -72,7 +72,7 @@ The first modelling experiment should remain deliberately comparable and interpr
 - Retain sensor_9 and sensor_14 initially, then run ablation experiments because they are strongly correlated and have inconsistent per-engine trend directions.
 - Run a separate experiment adding sensor_6.
 - Keep setting_1 and setting_2 available as contextual inputs for a comparison; setting_3 is constant in FD001.
-- Keep unit_id and cycle for grouping, sorting, target construction and traceability, not as ordinary sensor inputs.
+- Keep unit_id as an identifier only. Preserve cycle for sorting, grouping, target construction and traceability; evaluate cycle as an optional elapsed-age feature in a controlled ablation.
 
 ### Candidate features
 
