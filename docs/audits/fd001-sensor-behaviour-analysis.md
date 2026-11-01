@@ -233,8 +233,9 @@ Do not use sensor_1, sensor_5, sensor_10, sensor_16, sensor_18, sensor_19 or set
 
 ### Leakage-safe feature rules
 
-- Preserve unit_id and cycle as identifiers.
-- Do not feed unit_id as a general sensor measurement.
+- Preserve unit_id and cycle for grouping, sorting and traceability.
+- Do not feed unit_id as a general predictive feature.
+- Evaluate cycle as an optional elapsed-age feature in a controlled ablation. Never substitute the complete trajectory's terminal cycle or a future-derived lifetime percentage at prediction time.
 - Do not use complete trajectory length, terminal cycle or normalized total-life percentage as a prediction-time feature.
 - Rolling features must be computed within each engine, sorted by cycle, and must not cross engine boundaries.
 - At cycle (c), only readings from cycle (c) and earlier may contribute.
