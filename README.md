@@ -121,7 +121,7 @@ Verify and follow applicable source terms before redistributing dataset files. T
 ## Current status
 
 - [x] Repository initialized with project overview.
-- [ ] Phase 1: dataset and problem investigation.
+- [ ] Phase 1: dataset and problem investigation (in progress: FD001 structural audit and RUL target derivation documented).
 - [ ] Phase 2: reproducible FD001 data pipeline.
 - [ ] Phase 3: evaluated ML models.
 - [ ] Phase 4: backend and persistence.
@@ -129,5 +129,10 @@ Verify and follow applicable source terms before redistributing dataset files. T
 - [ ] Phase 6: triage and MLOps.
 - [ ] Phase 7: integration and deployment.
 - [ ] Phase 8: competition submission.
+
+Phase 1 working documents:
+- [FD001 structural audit](docs/audits/fd001-data-audit.md)
+- [FD001 RUL targets and worked examples](docs/rul-targets-and-examples.md)
+- [Dataset guide](docs/dataset-guide.md)
 
 See the `docs/` directory for detailed project specifications as they are added.
