@@ -79,3 +79,12 @@ The supplied test RUL is for the engine's final observed row. Earlier per-row te
 - [ ] Check one-to-one alignment between test units and RUL vector.
 - [ ] Inspect sensor distributions, constant columns and time trends.
 - [ ] Record data-validation results before feature engineering.
+
+
+## 8. Detailed RUL explanation
+
+See [Understanding Remaining Useful Life (RUL) in C-MAPSS FD001](rul-targets-and-examples.md) for:
+- training RUL derivation with exact engine examples,
+- test endpoint RUL alignment and row-level reconstruction,
+- common target-generation errors,
+- leakage precautions and capped-vs-uncapped target considerations.
