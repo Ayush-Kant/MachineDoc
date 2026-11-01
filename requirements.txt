@@ -1,0 +1,10 @@
+# Initial Phase 1 / data exploration dependencies.
+# Pin exact versions after verifying the local Python environment.
+numpy
+pandas
+matplotlib
+seaborn
+scikit-learn
+jupyterlab
+ipykernel
+pytest
