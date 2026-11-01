@@ -149,9 +149,14 @@ def analyze(train: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFra
 
     sensor_corr = train[SENSORS].corr(method="pearson")
     corr_rows = []
-    for i, sensor_a in enumerate(SENSORS):
-        for sensor_b in SENSORS[i + 1:]:
+    active_sensors = [
+        sensor for sensor in SENSORS if train[sensor].nunique() > 1
+    ]
+    for i, sensor_a in enumerate(active_sensors):
+        for sensor_b in active_sensors[i + 1:]:
             value = float(sensor_corr.loc[sensor_a, sensor_b])
+            if not np.isfinite(value):
+                continue
             corr_rows.append({
                 "sensor_a": sensor_a,
                 "sensor_b": sensor_b,
@@ -203,28 +208,22 @@ def make_plots(metrics: pd.DataFrame, deciles: pd.DataFrame, correlations: pd.Da
         fig.savefig(out_dir / filename, dpi=160)
         plt.close(fig)
 
-    pivot = correlations.pivot(index="sensor_a", columns="sensor_b", values="pearson_correlation")
-    full = pd.DataFrame(np.eye(len(SENSORS)), index=SENSORS, columns=SENSORS)
-    for a in SENSORS:
-        for b in SENSORS:
-            if a == b:
-                continue
-            if b in pivot.columns and a in pivot.index:
-                value = pivot.loc[a, b]
-            elif a in pivot.columns and b in pivot.index:
-                value = pivot.loc[b, a]
-            else:
-                pair = correlations[
-                    ((correlations["sensor_a"] == a) & (correlations["sensor_b"] == b))
-                    | ((correlations["sensor_a"] == b) & (correlations["sensor_b"] == a))
-                ]
-                value = float(pair.iloc[0]["pearson_correlation"])
+    active_sensors = metrics.loc[~metrics["constant"], "sensor"].tolist()
+    values_by_pair = {
+        (row.sensor_a, row.sensor_b): float(row.pearson_correlation)
+        for row in correlations.itertuples(index=False)
+    }
+    full = pd.DataFrame(np.eye(len(active_sensors)), index=active_sensors, columns=active_sensors)
+    for i, a in enumerate(active_sensors):
+        for b in active_sensors[i + 1:]:
+            value = values_by_pair.get((a, b), values_by_pair.get((b, a), np.nan))
             full.loc[a, b] = value
+            full.loc[b, a] = value
 
     fig, ax = plt.subplots(figsize=(12, 10))
-    image = ax.imshow(full.to_numpy(dtype=float), vmin=-1, vmax=1, cmap="coolwarm")
-    ax.set_xticks(np.arange(len(SENSORS)), SENSORS, rotation=90)
-    ax.set_yticks(np.arange(len(SENSORS)), SENSORS)
+    image = ax.imshow(np.ma.masked_invalid(full.to_numpy(dtype=float)), vmin=-1, vmax=1, cmap="coolwarm")
+    ax.set_xticks(np.arange(len(active_sensors)), active_sensors, rotation=90)
+    ax.set_yticks(np.arange(len(active_sensors)), active_sensors)
     ax.set_title("FD001 training sensor Pearson correlation matrix")
     fig.colorbar(image, ax=ax, label="Pearson correlation")
     fig.tight_layout()
