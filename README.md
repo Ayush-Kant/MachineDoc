@@ -121,7 +121,7 @@ Verify and follow applicable source terms before redistributing dataset files. T
 ## Current status
 
 - [x] Repository initialized with project overview.
-- [ ] Phase 1: dataset and problem investigation (in progress: FD001 structural audit and RUL target derivation documented).
+- [x] Phase 1: dataset and problem investigation (dataset audit, RUL derivation, sensor behaviour and baseline decisions documented).
 - [ ] Phase 2: reproducible FD001 data pipeline.
 - [ ] Phase 3: evaluated ML models.
 - [ ] Phase 4: backend and persistence.
