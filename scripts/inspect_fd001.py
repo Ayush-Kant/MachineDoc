@@ -37,7 +37,7 @@ def find_data_dir(explicit_dir: Path | None) -> Path:
 
 
 def load_matrix(path: Path) -> pd.DataFrame:
-    frame = pd.read_csv(path, sep=r"\\s+", header=None, engine="python")
+    frame = pd.read_csv(path, sep=r"\s+", header=None, engine="python")
     if frame.shape[1] != len(COLUMNS):
         raise ValueError(
             f"{path.name}: expected 26 columns, found {frame.shape[1]}"
@@ -114,20 +114,21 @@ def column_statistics(frame: pd.DataFrame) -> list[dict[str, Any]]:
     result = []
     for column in COLUMNS:
         values = frame[column].to_numpy(dtype=float)
+        unique_values = int(frame[column].nunique())
         result.append({
             "column": column,
-            "unique_values": int(pd.Series(values).nunique()),
+            "unique_values": unique_values,
             "min": float(values.min()),
             "max": float(values.max()),
             "mean": float(values.mean()),
             "std_population": float(values.std(ddof=0)),
-            "constant": bool(pd.Series(values).nunique() == 1),
+            "constant": unique_values == 1,
         })
     return result
 
 
 def read_rul(path: Path, expected_count: int) -> np.ndarray:
-    frame = pd.read_csv(path, sep=r"\\s+", header=None, engine="python")
+    frame = pd.read_csv(path, sep=r"\s+", header=None, engine="python")
     if frame.shape[1] != 1:
         raise ValueError(f"{path.name}: expected one RUL value per line")
     values = pd.to_numeric(frame.iloc[:, 0], errors="coerce").to_numpy(dtype=float)
@@ -202,9 +203,10 @@ def main() -> None:
 
     endpoint_checks = []
     for unit_id, group in test.groupby("unit_id", sort=True):
-        last_row = group.loc[group["cycle"].idxmax()]
+        last_index = group["cycle"].idxmax()
+        last_row = test.loc[last_index]
         endpoint_rul = int(
-            test_last_cycle.loc[last_row.name]
+            test_last_cycle.loc[last_index]
             - last_row["cycle"]
             + test_rul_by_unit[int(unit_id)]
         )
